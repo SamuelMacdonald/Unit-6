@@ -65,13 +65,23 @@ public class Move : MonoBehaviour
                 mSpeed = 1;
                 ain.SetBool("sprint", false);
             }
+            if (Input.GetKey(KeyCode.LeftControl))
+            {
+                mSpeed = 0.15f;
+                ain.SetBool("slow", true);
+            }
+            else
+            {
+                mSpeed = 1;
+                ain.SetBool("slow", false);
+            }
         }
         else
         {
             ain.SetBool("run", false);
         }
 
-        if (Input.GetKeyDown("e") && dashing && Input.GetKey(KeyCode.LeftShift))
+        if (Input.GetKeyDown("e") && dashing)
         {
             ain.SetBool("rool", true);
             StartCoroutine(Dash());

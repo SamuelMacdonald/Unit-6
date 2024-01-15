@@ -16,6 +16,7 @@ public class Move : MonoBehaviour
     float turnSmoothVelocity;
     public float speed = 12f;
     public float gravity = -9.81f;
+    public float jumpHieght = 10f;
     Vector3 ve;
     public float dashSpeed;
     public float dashTime;
@@ -23,6 +24,11 @@ public class Move : MonoBehaviour
     public float dashingPower = 20f;
     public float dashingTime = 12f;
     public float mSpeed;
+    public Transform groundCheck;
+    public float groundDistance = 0.4f;
+    public LayerMask groundMask;
+    bool isGrounded;
+    
 
     [SerializeField] public TrailRenderer tr;
 
@@ -39,11 +45,26 @@ public class Move : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
+        if(isGrounded && ve.y < 0)
+        {
+            ve.y = -2f;
+        }
+        if(isGrounded == false)
+        {
+            ain.SetBool("inAir", true);
+        }
+        else
+        {
+            ain.SetBool("inAir", false);
+        }
         float horizontal = Input.GetAxisRaw("Horizontal");
         float vertical = Input.GetAxisRaw("Vertical");
         Vector3 direction = new Vector3(horizontal, 0f, vertical).normalized;
         ain.SetBool("rool", false);
         ain.SetBool("sprint", false);
+        ain.SetBool("jump", false);
+        
 
 
         if (direction.magnitude >= 0.1f)
@@ -81,7 +102,14 @@ public class Move : MonoBehaviour
             ain.SetBool("run", false);
         }
 
-        if (Input.GetKeyDown("e") && dashing)
+        if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
+        { 
+            ain.SetBool("jump", true);
+            ve.y = Mathf.Sqrt(jumpHieght * -2f * gravity);
+           
+        }
+
+        if (Input.GetKeyDown("e") && dashing && Input.GetKey(KeyCode.LeftShift))
         {
             ain.SetBool("rool", true);
             StartCoroutine(Dash());

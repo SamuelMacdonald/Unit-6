@@ -16,7 +16,7 @@ public class Move : MonoBehaviour
     float turnSmoothVelocity;
     public float speed = 12f;
     public float gravity = -9.81f;
-    public float jumpHieght = 10f;
+    public float jumpHieght = 3f;
     Vector3 ve;
     public float dashSpeed;
     public float dashTime;
@@ -25,7 +25,7 @@ public class Move : MonoBehaviour
     public float dashingTime = 12f;
     public float mSpeed;
     public Transform groundCheck;
-    public float groundDistance = 0.4f;
+    public float groundDistance = 0.1f;
     public LayerMask groundMask;
     bool isGrounded;
     

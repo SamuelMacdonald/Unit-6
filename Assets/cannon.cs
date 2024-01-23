@@ -6,7 +6,7 @@ using UnityEngine.AI;
 public class cannon : MonoBehaviour
 {
     // Start is called before the first frame update
-    public NavMeshAgent enemy;
+   
     public Transform player;
 
     [SerializeField] private float timer = 5;
@@ -15,15 +15,16 @@ public class cannon : MonoBehaviour
     public GameObject enemyBullet;
     public Transform spawnPoint;
     public float enemySpeed;
+    
     void Start()
     {
-        
+        ParticleSystem part = GetComponent<ParticleSystem>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        enemy.SetDestination(player.position);
+       
         ShootAtPlayer();
     }
 
@@ -32,12 +33,12 @@ public class cannon : MonoBehaviour
         bulletTime -= Time.deltaTime;
 
         if (bulletTime > 0) return;
-
+        ParticleSystem part = GetComponent<ParticleSystem>();
+        part.Play();
         bulletTime = timer;
-
         GameObject bulletObj = Instantiate(enemyBullet, spawnPoint.transform.position, spawnPoint.transform.rotation) as GameObject;
         Rigidbody bulletRig = bulletObj.GetComponent<Rigidbody>();
         bulletRig.AddForce(bulletRig.transform.forward * enemySpeed);
-        Destroy(bulletObj, 0.1f);
+        Destroy(bulletObj, 0.5f);
     }
 }
